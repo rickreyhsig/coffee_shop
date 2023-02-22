@@ -1,0 +1,43 @@
+<%= form_with(model: order, local: true) do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+      <% order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label 'Please select the items wanted:' %>
+    <%= form.hidden_field :customer_id, value: params['customer_id'] %>
+  </div>
+
+  <!-- Rails nested form using accepts_nested_attributes_for -->
+  <table>
+    <tr>
+      <th>Description</th>
+      <th>Quantity</th>
+    </tr>
+    <% Item.all.each do |item| %>
+      <%= form.fields_for :order_items do |o| %>
+        <tr>
+          <td>
+            <%= item.description %>
+            <%= o.hidden_field :item_id, value: item.id %>
+          </td>
+          <td>
+            <%= o.number_field :quantity %>
+          </td>
+        </tr>
+      <% end %>
+    <% end %>
+  </table>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

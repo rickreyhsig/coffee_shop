@@ -7,4 +7,7 @@
 
 <%= link_to 'Edit', edit_customer_path(@customer) %> |
 <%= link_to 'Back', customers_path %> |
-<%= link_to 'Coffee Shop', items_path %> |
+<%= link_to 'Coffee Shop', new_order_path(request.query_parameters.merge({ customer_id: @customer.id })) %>
+
+
+
