@@ -1,24 +1,8 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
 * Ruby version
+  * `ruby 2.5.9p229 (2021-04-05 revision 67939) [x86_64-darwin16]`
 
-* System dependencies
+* Postman Collection
+  * https://github.com/ricky1477/coffee_shop/blob/main/Coffee%20Shop.postman_collection.json
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
