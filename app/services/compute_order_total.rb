@@ -8,15 +8,16 @@ module Services
     end
 
     def process(order = @order)
-      if order_has_coffee_sandwich_and_pepsi?
-        coffee_sandwich_pepsi_discount
-      elsif order_has_coffee_and_burger?
-        coffee_burger_discount
-      elsif order_has_pepsi_and_burger?
-        pepsi_burger_discount
-      else
-        no_discount_order
-      end
+      @order_total =  if order_has_coffee_sandwich_and_pepsi?
+                        Services::CoffeeSandwichPepsiDiscount.new.process(@order)
+                      elsif order_has_coffee_and_burger?
+                        Services::CoffeeBurgerDiscount.new.process(@order)
+                      elsif order_has_pepsi_and_burger?
+                        Services::PepsiBurgerDiscount.new.process(@order)
+                      else
+                        Services::NoDiscount.new.process(@order)
+                      end
+      update_order_total
       return @order_total
     end
 
@@ -28,62 +29,7 @@ module Services
       return @item_list
     end
 
-    def coffee_burger_discount
-      return @order_total if @order_total
-      @order_total = 0.0
-      @order.order_items.includes(:item).each do |order_item|
-        if order_item.item.description == 'coffee'
-          @order_total += (order_item.item.price*(0.9) * order_item.quantity).to_f
-        elsif order_item.item.description == 'burger'
-          @order_total += (order_item.item.price*(0.85) * order_item.quantity).to_f
-        else
-          @order_total += (order_item.item.price * order_item.quantity).to_f
-        end
-      end
-  
-      @order.update_column(:order_total, @order_total)
-    end
-
-    def pepsi_burger_discount
-      return @order_total if @order_total
-      @order_total = 0.0
-      @order.order_items.includes(:item).each do |order_item|
-        if order_item.item.description == 'pepsi'
-          @order_total += (order_item.item.price*(0.85) * order_item.quantity).to_f
-        elsif order_item.item.description == 'burger'
-          @order_total += (order_item.item.price*(0.85) * order_item.quantity).to_f
-        else
-          @order_total += (order_item.item.price * order_item.quantity).to_f
-        end
-      end
-  
-      @order.update_column(:order_total, @order_total)
-    end
-
-    def coffee_sandwich_pepsi_discount
-      @order_total = 0.0
-      @order.order_items.includes(:item).each do |order_item|
-        if order_item.item.description == 'coffee'
-          @order_total += (order_item.item.price*(0.9) * order_item.quantity).to_f
-        elsif order_item.item.description == 'burger'
-          @order_total += (order_item.item.price*(0.85) * order_item.quantity).to_f
-        elsif order_item.item.description == 'pepsi'
-          @order_total += (order_item.item.price*(0.9) * order_item.quantity).to_f
-        else
-          @order_total += (order_item.item.price * order_item.quantity).to_f
-        end
-      end
-  
-      @order.update_column(:order_total, @order_total)
-    end
-
-    def no_discount_order
-      return @order_total if @order_total
-      @order_total = 0.0
-      @order.order_items.includes(:item).each do |order_item|
-        @order_total += (order_item.item.price * order_item.quantity).to_f
-      end
-  
+    def update_order_total
       @order.update_column(:order_total, @order_total)
     end
 
