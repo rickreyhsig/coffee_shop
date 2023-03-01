@@ -42,7 +42,7 @@ class Order < ApplicationRecord
   end
 
   # This functionality would be better built with a job scheduler
-  # For simplicity, I've done this.
+  # For simplicity, I've done this...
   def send_notification
     Thread.new do
       sleep(10.seconds)
