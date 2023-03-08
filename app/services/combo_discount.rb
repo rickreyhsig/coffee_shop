@@ -15,7 +15,7 @@ module Services
 
     def compute_order_total
       order_total = 0.0
-      @order.order_items.includes(:item).each do |order_item|
+      @order.includes(order_items: :item).each do |order_item|
         item_description = order_item.item.description
         if (@combo_discounts[item_description.to_sym])
           discount = (1-@combo_discounts[item_description.to_sym])
