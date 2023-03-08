@@ -1,6 +1,7 @@
 class Order < ApplicationRecord
   belongs_to :customer
   has_many :order_items
+
   accepts_nested_attributes_for :order_items, allow_destroy: true
   after_save :compute_discount
   after_save :compute_order_total

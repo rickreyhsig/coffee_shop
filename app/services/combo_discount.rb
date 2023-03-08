@@ -3,12 +3,10 @@ module Services
     def initialize(order, combo_discounts)
       @order = Order.includes(order_items: :item).find(order.id)
       @combo_discounts = combo_discounts
-      @order_total = nil
     end
 
     def process(order = @order)
-      @order_total = compute_order_total
-      return @order_total
+      return compute_order_total
     end
 
     private
