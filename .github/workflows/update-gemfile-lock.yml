@@ -5,6 +5,9 @@ on:
     paths:
       - 'Gemfile'
       - 'Gemfile.lock'
+      
+permissions:
+  contents: write
 
 jobs:
   update-gemfile-lock:
